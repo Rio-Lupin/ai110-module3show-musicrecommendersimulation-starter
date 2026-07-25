@@ -13,6 +13,65 @@ DEFAULT_TASTE_PROFILE: Dict[str, object] = {
     "likes_acoustic": False,
 }
 
+
+def build_sample_user_profiles() -> List[Dict[str, object]]:
+    """Return a set of example user preference dictionaries for evaluation."""
+    return [
+        {
+            "name": "High-Energy Pop",
+            "favorite_genre": "pop",
+            "preferred_genres": ["pop", "dance-pop", "synthwave"],
+            "favorite_mood": "happy",
+            "preferred_moods": ["happy", "energetic", "upbeat"],
+            "target_energy": 0.8,
+            "energy_range": (0.7, 0.95),
+            "likes_acoustic": False,
+        },
+        {
+            "name": "Chill Lofi",
+            "favorite_genre": "lofi",
+            "preferred_genres": ["lofi", "ambient", "jazz"],
+            "favorite_mood": "chill",
+            "preferred_moods": ["chill", "calm", "reflective"],
+            "target_energy": 0.3,
+            "energy_range": (0.15, 0.45),
+            "likes_acoustic": True,
+        },
+        {
+            "name": "Deep Intense Rock",
+            "favorite_genre": "rock",
+            "preferred_genres": ["rock", "alternative", "metal"],
+            "favorite_mood": "intense",
+            "preferred_moods": ["intense", "dramatic", "dark"],
+            "target_energy": 0.85,
+            "energy_range": (0.75, 0.95),
+            "likes_acoustic": False,
+        },
+        {
+            "name": "Adversarial Conflicted",
+            "favorite_genre": "pop",
+            "preferred_genres": ["pop", "ambient", "rock"],
+            "favorite_mood": "sad",
+            "preferred_moods": ["sad", "melancholic", "energetic"],
+            "target_energy": 0.9,
+            "energy_range": (0.85, 0.95),
+            "likes_acoustic": False,
+        },
+    ]
+
+
+def evaluate_profiles(songs: List[Dict], profiles: Optional[List[Dict[str, object]]] = None) -> List[Tuple[str, List[Tuple[Dict, float, str]]]]:
+    """Return top recommendations for each profile for system evaluation."""
+    if profiles is None:
+        profiles = build_sample_user_profiles()
+
+    results: List[Tuple[str, List[Tuple[Dict, float, str]]]] = []
+    for profile in profiles:
+        name = str(profile.get("name", "Unnamed Profile"))
+        recommendations = recommend_songs(profile, songs, k=3)
+        results.append((name, recommendations))
+    return results
+
 @dataclass
 class Song:
     """

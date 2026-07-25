@@ -10,20 +10,30 @@ You will implement the functions in recommender.py:
 """
 
 try:
-    from .recommender import DEFAULT_TASTE_PROFILE, load_songs, recommend_songs
+    from .recommender import (
+        DEFAULT_TASTE_PROFILE,
+        build_sample_user_profiles,
+        evaluate_profiles,
+        load_songs,
+        recommend_songs,
+    )
 except ImportError:  # pragma: no cover - allows running file directly
-    from recommender import DEFAULT_TASTE_PROFILE, load_songs, recommend_songs
+    from recommender import (
+        DEFAULT_TASTE_PROFILE,
+        build_sample_user_profiles,
+        evaluate_profiles,
+        load_songs,
+        recommend_songs,
+    )
 
 
 def main() -> None:
     songs = load_songs("data/songs.csv")
 
-    # Specific taste profile used for comparisons
+    print("\nDefault profile evaluation:\n")
     user_prefs = DEFAULT_TASTE_PROFILE
-
     recommendations = recommend_songs(user_prefs, songs, k=5)
 
-    print("\nTop recommendations:\n")
     for index, rec in enumerate(recommendations, start=1):
         song, score, explanation = rec
         print(f"{index}. {song['title']}")
@@ -31,6 +41,14 @@ def main() -> None:
         print("   Reasons:")
         for reason in explanation.split("; "):
             print(f"     - {reason}")
+        print()
+
+    print("\nSystem Evaluation: sample user profiles\n")
+    for name, profile_recs in evaluate_profiles(songs, build_sample_user_profiles()):
+        print(f"Profile: {name}")
+        for index, rec in enumerate(profile_recs, start=1):
+            song, score, explanation = rec
+            print(f"  {index}. {song['title']} (score: {score:.2f})")
         print()
 
 

@@ -1,4 +1,11 @@
-from src.recommender import Song, UserProfile, Recommender, load_songs, score_song
+from src.recommender import (
+    Song,
+    UserProfile,
+    Recommender,
+    build_sample_user_profiles,
+    load_songs,
+    score_song,
+)
 
 def make_small_recommender() -> Recommender:
     songs = [
@@ -95,3 +102,45 @@ def test_score_song_uses_weighted_recommendation_recipe():
     assert score > 0.8
     assert any("mood" in reason.lower() for reason in reasons)
     assert any("energy" in reason.lower() for reason in reasons)
+
+
+def test_reverted_weights_keep_genre_match_preferred():
+    user_prefs = {
+        "favorite_genre": "pop",
+        "preferred_genres": ["pop", "indie pop", "synthwave"],
+        "favorite_mood": "happy",
+        "preferred_moods": ["happy", "energetic", "upbeat"],
+        "target_energy": 0.75,
+        "energy_range": (0.65, 0.9),
+        "likes_acoustic": False,
+    }
+    genre_match_song = {
+        "genre": "pop",
+        "mood": "happy",
+        "energy": 0.2,
+        "acousticness": 0.18,
+        "valence": 0.84,
+        "danceability": 0.79,
+    }
+    energy_match_song = {
+        "genre": "rock",
+        "mood": "happy",
+        "energy": 0.82,
+        "acousticness": 0.18,
+        "valence": 0.84,
+        "danceability": 0.79,
+    }
+
+    genre_score, _ = score_song(user_prefs, genre_match_song)
+    energy_score, _ = score_song(user_prefs, energy_match_song)
+
+    assert genre_score >= energy_score
+
+
+def test_build_sample_user_profiles_returns_distinct_profiles():
+    profiles = build_sample_user_profiles()
+
+    assert len(profiles) >= 3
+    assert any(profile["name"] == "High-Energy Pop" for profile in profiles)
+    assert any(profile["name"] == "Chill Lofi" for profile in profiles)
+    assert any(profile["name"] == "Deep Intense Rock" for profile in profiles)

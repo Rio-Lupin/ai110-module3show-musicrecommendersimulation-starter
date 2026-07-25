@@ -137,13 +137,85 @@ Paste a sample of your recommender's output here as a text block so a reader can
 
 ## Experiments You Tried
 
-Use this section to document the experiments you ran. For example:
+I tested the recommender with several distinct user preference dictionaries:
 
-- What happened when you changed the weight on genre from 2.0 to 0.5
-- What happened when you added tempo or valence to the score
-- How did your system behave for different types of users
+- High-Energy Pop: prefers upbeat pop songs with energy in the 0.7 to 0.95 range.
+- Chill Lofi: prefers calm, acoustic, low-energy tracks with a reflective mood.
+- Deep Intense Rock: prefers dramatic, high-energy rock songs with strong intensity.
+- Adversarial Conflicted: combines a sad favorite mood with a very high target energy, which is meant to stress-test whether the scoring logic behaves sensibly.
 
----
+This system evaluation helps show whether the scorer behaves intuitively for both normal and edge-case profiles.
+
+Default profile evaluation:
+
+1. Sunrise City
+   Score: 1.00
+   Reasons:
+     - Mood matches the user's favorite mood.
+     - Genre matches the user's favorite genre.
+     - Energy is within the target range.
+     - Acousticness fits the user's preference.
+     - Positive valence adds a small bonus.
+     - High danceability adds a small bonus.
+
+2. Rooftop Lights
+   Score: 0.92
+   Reasons:
+     - Mood matches the user's favorite mood.
+     - Genre matches a preferred genre.
+     - Energy is within the target range.
+     - Acousticness fits the user's preference.
+     - Positive valence adds a small bonus.
+     - High danceability adds a small bonus.
+
+3. Neon District
+   Score: 0.70
+   Reasons:
+     - Mood matches a preferred mood.
+     - Energy is within the target range.
+     - Acousticness fits the user's preference.
+     - Positive valence adds a small bonus.
+     - High danceability adds a small bonus.
+
+4. Gym Hero
+   Score: 0.64
+   Reasons:
+     - Genre matches the user's favorite genre.
+     - Energy is close to the target range.
+     - Acousticness fits the user's preference.
+     - Positive valence adds a small bonus.
+     - High danceability adds a small bonus.
+
+5. Night Drive Loop
+   Score: 0.55
+   Reasons:
+     - Genre matches a preferred genre.
+     - Energy is within the target range.
+     - Acousticness fits the user's preference.
+     - High danceability adds a small bonus.
+
+
+System Evaluation: sample user profiles
+
+Profile: High-Energy Pop
+  1. Sunrise City (score: 1.00)
+  2. Rooftop Lights (score: 0.80)
+  3. Neon District (score: 0.70)
+
+Profile: Chill Lofi
+  1. Midnight Coding (score: 0.98)
+  2. Library Rain (score: 0.95)
+  3. Spacewalk Thoughts (score: 0.90)
+
+Profile: Deep Intense Rock
+  1. Storm Runner (score: 0.98)
+  2. Gym Hero (score: 0.80)
+  3. Sunrise City (score: 0.45)
+
+Profile: Adversarial Conflicted
+  1. Neon District (score: 0.70)
+  2. Gym Hero (score: 0.65)
+  3. Sunrise City (score: 0.64)
 
 ## Limitations and Risks
 
@@ -156,7 +228,8 @@ Examples:
 - It might over favor one genre or mood
 
 You will go deeper on this in your model card.
-
+- it has small data set
+- the profiles make the recommendations narrow and does not allow for exploration of new music for the user
 ---
 
 ## Reflection
@@ -169,6 +242,10 @@ Write 1 to 2 paragraphs here about what you learned:
 
 - about how recommenders turn data into predictions
 - about where bias or unfairness could show up in systems like this
+i learned that there are many things to take into consideration when designing a music recommender and that one has to make desisions about how you want the algorithem to be and what do you want it to priorities. This will inevitably cause bias and based on the goal of the program this may be a good or bad thing.
+It is less about finding one perfect formula and more about making thoughtful design choices. Small changes in the weighting of features such as mood, genre, and energy can strongly change the results. A system can seem objective while still reflecting bias, because the rules it follows are shaped by the preferences and assumptions of the designer building the program.
+
+
 
 
 
