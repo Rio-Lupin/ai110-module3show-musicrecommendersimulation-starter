@@ -1,4 +1,4 @@
-from src.recommender import Song, UserProfile, Recommender
+from src.recommender import Song, UserProfile, Recommender, load_songs, score_song
 
 def make_small_recommender() -> Recommender:
     songs = [
@@ -59,3 +59,39 @@ def test_explain_recommendation_returns_non_empty_string():
     explanation = rec.explain_recommendation(user, song)
     assert isinstance(explanation, str)
     assert explanation.strip() != ""
+
+
+def test_load_songs_reads_csv_and_converts_numeric_values():
+    songs = load_songs("data/songs.csv")
+
+    assert len(songs) == 18
+    assert songs[0]["title"] == "Sunrise City"
+    assert songs[0]["id"] == 1
+    assert songs[0]["energy"] == 0.82
+    assert songs[0]["tempo_bpm"] == 118
+
+
+def test_score_song_uses_weighted_recommendation_recipe():
+    user_prefs = {
+        "favorite_genre": "pop",
+        "preferred_genres": ["pop", "indie pop", "synthwave"],
+        "favorite_mood": "happy",
+        "preferred_moods": ["happy", "energetic", "upbeat"],
+        "target_energy": 0.75,
+        "energy_range": (0.65, 0.9),
+        "likes_acoustic": False,
+    }
+    song = {
+        "genre": "pop",
+        "mood": "happy",
+        "energy": 0.82,
+        "acousticness": 0.18,
+        "valence": 0.84,
+        "danceability": 0.79,
+    }
+
+    score, reasons = score_song(user_prefs, song)
+
+    assert score > 0.8
+    assert any("mood" in reason.lower() for reason in reasons)
+    assert any("energy" in reason.lower() for reason in reasons)

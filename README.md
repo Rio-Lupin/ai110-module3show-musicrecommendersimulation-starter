@@ -28,6 +28,19 @@ Some prompts to answer:
 - How do you choose which songs to recommend
 
 You can include a simple diagram or bullet list if helpful.
+ the Features used in each song in my system are genre,mood,energy,tempo_bpm,valence. The recomender computes the score my putting more weight on mood and enegy but also taking into consideration the other catagories. the app chooses songs based on the profile dictionary that represents the preference of the user.
+
+ the agorithem recipe would be :
+ Mood: 0.35
+ Energy: 0.30
+ Genre: 0.20
+ Acousticness: 0.10
+ Tempo/valence: 0.05
+
+ some bias i might expect:
+ Confirmation bias: if the system only rewards what the user already likes, it may keep recommending similar songs and reduce variety.
+ User-profile bias: a profile based on one person’s taste may accidentally make the system seem universal or objective when it is really narrow.
+
 
 ---
 
@@ -70,14 +83,53 @@ You can add more tests in `tests/test_recommender.py`.
 
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
 
-```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
-```
+`Top recommendations:
+
+1. Sunrise City
+   Score: 1.00
+   Reasons:
+     - Mood matches the user's favorite mood.
+     - Genre matches the user's favorite genre.
+     - Energy is within the target range.
+     - Acousticness fits the user's preference.
+     - Positive valence adds a small bonus.
+     - High danceability adds a small bonus.
+
+2. Rooftop Lights
+   Score: 0.92
+   Reasons:
+     - Mood matches the user's favorite mood.
+     - Genre matches a preferred genre.
+     - Energy is within the target range.
+     - Acousticness fits the user's preference.
+     - Positive valence adds a small bonus.
+     - High danceability adds a small bonus.
+
+3. Neon District
+   Score: 0.70
+   Reasons:
+     - Mood matches a preferred mood.
+     - Energy is within the target range.
+     - Acousticness fits the user's preference.
+     - Positive valence adds a small bonus.
+     - High danceability adds a small bonus.
+
+4. Gym Hero
+   Score: 0.64
+   Reasons:
+     - Genre matches the user's favorite genre.
+     - Energy is close to the target range.
+     - Acousticness fits the user's preference.
+     - Positive valence adds a small bonus.
+     - High danceability adds a small bonus.
+
+5. Night Drive Loop
+   Score: 0.55
+   Reasons:
+     - Genre matches a preferred genre.
+     - Energy is within the target range.
+     - Acousticness fits the user's preference.
+     - High danceability adds a small bonus.
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
 

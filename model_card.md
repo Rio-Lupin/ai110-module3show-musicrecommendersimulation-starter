@@ -5,6 +5,7 @@
 Give your model a short, descriptive name.  
 Example: **VibeFinder 1.0**  
 
+VibeFind
 ---
 
 ## 2. Intended Use  
@@ -17,6 +18,11 @@ Prompts:
 - What assumptions does it make about the user  
 - Is this for real users or classroom exploration  
 
+It is designed to recomend songs based on user preferences/ profile with more weight on the mood and energy of the song and some weight on genre, tempo, ect.
+
+The Assuptions it makes about the user is based on the profile of the user .
+
+this is more for classroom exploration since currently this only has one profile in the program.
 ---
 
 ## 3. How the Model Works  
